@@ -21,14 +21,17 @@ func New() (*App, error) {
 	a.e = endpoint.New(a.s)
 	a.c = chi.NewRouter()
 	a.c.Get("/status", a.e.Status)
+	a.c.Get("/jobs", a.e.Jobs)
 	return a, nil
 }
 
 func (a *App) Run(port int) error {
-	portStr := fmt.Sprintf(":%d", port)
-	fmt.Println("server running at ", portStr)
+
+	portStr := fmt.Sprintf("http://localhost:%d", port)
+
+	fmt.Println("server running at", portStr)
 	srv := &http.Server{
-		Addr:    portStr,
+		Addr:    fmt.Sprintf(":%d", port),
 		Handler: a.c,
 	}
 
